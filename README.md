@@ -1,2 +1,2 @@
 # Matura_Informatyka_Rozszerzona
-Linux + Open Office
+Linux + Python + Open Office
