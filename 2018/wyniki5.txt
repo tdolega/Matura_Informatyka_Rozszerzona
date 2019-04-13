@@ -4,7 +4,7 @@ SELECT losowania.data_losowania, losowania.nr1, losowania.nr2, losowania.nr3, lo
 FROM losowania
 INNER JOIN wygrane ON losowania.id_losowania=wygrane.id_losowania
 INNER JOIN punkty ON wygrane.id_punktu=punkty.id_punktu
-WHERE punkty.miasto = "Swidnica" 
+WHERE punkty.miasto = 'Swidnica'
 
 5.2)
 
@@ -20,7 +20,7 @@ SELECT losowania.data_losowania
 FROM losowania
 INNER JOIN wygrane ON losowania.id_losowania=wygrane.id_losowania
 INNER JOIN punkty ON wygrane.id_punktu=punkty.id_punktu
-WHERE punkty.miasto = "Krakow" 
+WHERE punkty.miasto = 'Krakow' 
 	AND (losowania.data_losowania LIKE CONCAT('%-', losowania.nr1) 
      OR losowania.data_losowania LIKE CONCAT('%-0', losowania.nr1) 
      OR losowania.data_losowania LIKE CONCAT('%-', losowania.nr2) 
