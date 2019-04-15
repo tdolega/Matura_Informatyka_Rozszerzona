@@ -1,51 +1,19 @@
 6.1)
 
-SELECT TOP( 10 ) "Pojemnosc_dysku", COUNT( * ) "ilosc" FROM "komputery" GROUP BY "Pojemnosc_dysku"
+jaaaaak się kopiuje tabelki z tego głupiego programu :c send help
 
 6.2)
 
-SELECT "awarie"."Numer_komputera", COUNT(*) as liczba_napraw
-FROM "awarie"
-INNER JOIN "komputery" ON "awarie"."Numer_komputera" = "komputery"."Numer_komputera"
-INNER JOIN "naprawy" ON "awarie"."Numer_zgloszenia" = "naprawy"."Numer_zgloszenia"
-WHERE komputery.Sekcja = 'A' AND naprawy.Rodzaj = 'wymiana'
-GROUP BY komputery.Numer_komputera
-HAVING COUNT(*) > 10
+znowu chcą tabelke
 
 6.3)
 
-SELECT  komputery.Sekcja, year("awarie"."Czas_awarii") as rok, month("awarie"."Czas_awarii") as msc, day("awarie"."Czas_awarii") as dzien
-FROM "awarie"
-INNER JOIN "komputery" ON "awarie"."Numer_komputera" = "komputery"."Numer_komputera"
-INNER JOIN "naprawy" ON "awarie"."Numer_zgloszenia" = "naprawy"."Numer_zgloszenia"
-GROUP BY komputery.Sekcja, year("awarie"."Czas_awarii"), month("awarie"."Czas_awarii"), day("awarie"."Czas_awarii")
-ORDER BY count(*) DESC
-LIMIT 1
+Q 2015-12-23
 
 6.4)
 
-SELECT awarie.Numer_zgloszenia, awarie.Czas_awarii, naprawy.Czas_naprawy
-FROM (
-	SELECT  awarie.Numer_zgloszenia, MAX(CAST(naprawy.Czas_naprawy AS TIMESTAMP)) as finalfix
-	FROM "awarie"
-	INNER JOIN "naprawy" ON "awarie"."Numer_zgloszenia" = "naprawy"."Numer_zgloszenia"
-	GROUP BY awarie.Numer_zgloszenia
-) as naprawione
-INNER JOIN "awarie" ON naprawione."Numer_zgloszenia" = "awarie"."Numer_zgloszenia"
-INNER JOIN "naprawy" ON "awarie"."Numer_zgloszenia" = "naprawy"."Numer_zgloszenia"
-ORDER BY DATEDIFF('ss', finalfix, CAST(awarie.Czas_awarii AS TIMESTAMP))
-LIMIT 1
+2087, 2015-11-06 12:38:46, 2015-11-13 12:38:32
 
 6.5)
 
-SELECT COUNT(*)
-FROM (
-	SELECT *
-	FROM komputery
-	WHERE komputery.Numer_komputera NOT IN (
-		SELECT "komputery"."Numer_komputera"
-		FROM "awarie"
-		INNER JOIN "komputery" ON "awarie"."Numer_komputera" = "komputery"."Numer_komputera"
-		WHERE awarie.Priorytet IN (8, 9, 10)
-		)
-)
+149
