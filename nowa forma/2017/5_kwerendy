@@ -1,0 +1,67 @@
+5.1)
+a)
+
+SELECT Rodzaj_meczu, COUNT(*) as ilosc
+FROM wyniki
+INNER JOIN druzyny ON druzyny.Id_druzyny = wyniki.Id_druzyny
+WHERE druzyny.Miasto = 'Kucykowo'
+GROUP BY Rodzaj_meczu
+
+b)
+
+SELECT  YEAR(Data_meczu) as rok, COUNT(*) as ilosc
+FROM wyniki
+INNER JOIN druzyny ON druzyny.Id_druzyny = wyniki.Id_druzyny
+WHERE druzyny.Miasto = 'Kucykowo'
+GROUP BY rok
+ORDER BY ilosc DESC
+LIMIT 1
+
+5.2)
+
+SELECT Nazwa
+FROM wyniki
+INNER JOIN druzyny ON druzyny.Id_druzyny = wyniki.Id_druzyny
+GROUP BY Nazwa
+HAVING SUM(Bramki_zdobyte) = SUM(Bramki_stracone)
+
+5.3)
+
+SELECT remisy, wygrane, przegrane
+FROM
+	(SELECT COUNT(*) as remisy
+	FROM wyniki
+	INNER JOIN druzyny ON druzyny.Id_druzyny = wyniki.Id_druzyny
+	WHERE Gdzie = 'W' AND Bramki_zdobyte = Bramki_stracone)
+JOIN(
+	SELECT COUNT(*) as wygrane
+	FROM wyniki
+	INNER JOIN druzyny ON druzyny.Id_druzyny = wyniki.Id_druzyny
+	WHERE Gdzie = 'W' AND Bramki_zdobyte > Bramki_stracone)
+ON 1=1
+JOIN(
+	SELECT COUNT(*) as przegrane
+	FROM wyniki
+	INNER JOIN druzyny ON druzyny.Id_druzyny = wyniki.Id_druzyny
+	WHERE Gdzie = 'W' AND Bramki_zdobyte < Bramki_stracone)
+ON 1=1
+
+5.4)
+
+SELECT COUNT(*) as ilosc
+FROM(
+	SELECT COUNT(*)
+	FROM wyniki
+	INNER JOIN sedziowie ON sedziowie.Nr_licencji = wyniki.Nr_licencji
+	WHERE Nr_licencji NOT IN (
+		SELECT Nr_licencji
+		FROM wyniki
+		RIGHT JOIN sedziowie ON sedziowie.Nr_licencji = wyniki.Nr_licencji
+		WHERE Rodzaj_meczu = 'P')
+	GROUP BY Nr_licencji
+	UNION ALL
+	SELECT COUNT(*)
+	FROM wyniki
+	RIGHT JOIN sedziowie ON sedziowie.Nr_licencji = wyniki.Nr_licencji
+	WHERE wyniki.Nr_licencji IS NULL
+	GROUP BY Nr_licencji)
