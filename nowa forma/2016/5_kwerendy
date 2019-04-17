@@ -1,0 +1,61 @@
+5.1)
+
+a)
+
+SELECT imie, nazwisko
+FROM studenci
+INNER JOIN wypozyczenia ON wypozyczenia.pesel = studenci.pesel
+GROUP BY imie, nazwisko
+ORDER BY COUNT(tytul) DESC
+LIMIT 1
+
+b)
+
+SELECT tytul
+FROM wypozyczenia
+WHERE pesel IN(
+SELECT pesel
+FROM studenci
+INNER JOIN wypozyczenia ON wypozyczenia.pesel = studenci.pesel
+GROUP BY pesel
+ORDER BY COUNT(tytul) DESC
+LIMIT 1)
+
+5.2)
+
+SELECT AVG(CAST(c AS Double)) as srednia
+FROM(
+SELECT COUNT(*) as c
+FROM meldunek
+GROUP BY id_pok) as q
+
+5.3)
+
+SELECT plec, COUNT(*) as liczba
+FROM(
+SELECT CASE WHEN mod(substring(pesel, 10, 1), 2) = 0 THEN 'K' ELSE 'M' End as plec
+FROM studenci)
+GROUP BY plec
+
+5.4)
+
+SELECT nazwisko, imie
+FROM studenci
+LEFT JOIN meldunek ON studenci.pesel = meldunek.pesel
+WHERE meldunek.pesel IS NULL
+ORDER BY nazwisko
+
+5.5)
+
+SELECT c2-c1 FROM
+(
+SELECT SUM(c) - COUNT(c) as c1
+FROM(
+SELECT COUNT(*) as c
+FROM wypozyczenia
+INNER JOIN meldunek ON meldunek.pesel = wypozyczenia.pesel
+GROUP BY tytul, id_pok
+HAVING COUNT(*) > 1)
+), (
+SELECT COUNT(*) as c2
+FROM wypozyczenia)
