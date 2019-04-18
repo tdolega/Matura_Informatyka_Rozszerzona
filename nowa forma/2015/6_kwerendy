@@ -1,0 +1,59 @@
+6.1)
+
+SELECT Rok, GrandPrix
+FROM wyniki
+INNER JOIN kierowcy ON kierowcy.Id_kierowcy = wyniki.Id_kierowcy
+INNER JOIN wyscigi ON wyscigi.Id_wyscigu = wyniki.Id_wyscigu
+WHERE Imie = 'Robert' AND Nazwisko = 'Kubica'
+ORDER BY Punkty DESC
+LIMIT 1
+
+6.2)
+
+SELECT GrandPrix
+FROM wyscigi
+GROUP BY GrandPrix
+ORDER BY COUNT(*)
+LIMIT 1
+
+6.3)
+
+SELECT Rok, Imie, Nazwisko, SUM(Punkty) as punkty
+FROM wyniki
+INNER JOIN kierowcy ON kierowcy.Id_kierowcy = wyniki.Id_kierowcy
+INNER JOIN wyscigi ON wyscigi.Id_wyscigu = wyniki.Id_wyscigu
+WHERE Rok = 2000
+GROUP BY Imie, Nazwisko, Rok
+LIMIT 1
+
+
+SELECT Rok, Imie, Nazwisko, SUM(Punkty) as punkty
+FROM wyniki
+INNER JOIN kierowcy ON kierowcy.Id_kierowcy = wyniki.Id_kierowcy
+INNER JOIN wyscigi ON wyscigi.Id_wyscigu = wyniki.Id_wyscigu
+WHERE Rok = 2006
+GROUP BY Imie, Nazwisko, Rok
+LIMIT 1
+
+
+SELECT Rok, Imie, Nazwisko, SUM(Punkty) as punkty
+FROM wyniki
+INNER JOIN kierowcy ON kierowcy.Id_kierowcy = wyniki.Id_kierowcy
+INNER JOIN wyscigi ON wyscigi.Id_wyscigu = wyniki.Id_wyscigu
+WHERE Rok = 2012
+GROUP BY Imie, Nazwisko, Rok
+LIMIT 1
+
+// niestety Base nie ogarnia unionów
+
+6.4)
+
+SELECT Kraj, COUNT(Id_kierowcy) as liczba_reprezentantow
+FROM(
+SELECT Kraj, Id_kierowcy
+FROM wyniki
+INNER JOIN kierowcy ON kierowcy.Id_kierowcy = wyniki.Id_kierowcy
+INNER JOIN wyscigi ON wyscigi.Id_wyscigu = wyniki.Id_wyscigu
+WHERE Rok = 2012 AND Punkty > 0
+GROUP BY Id_kierowcy, Kraj)
+GROUP BY Kraj
