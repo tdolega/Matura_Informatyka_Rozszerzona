@@ -1,0 +1,82 @@
+6.1)
+
+SELECT Imie, Nazwisko, COUNT(*) as c
+FROM obrazy
+INNER JOIN malarze ON malarze.ID_malarza = obrazy.ID_malarza
+WHERE Stan IN ('ekspozycja stala', 'ekspozycja czasowa')
+GROUP BY Imie, Nazwisko
+ORDER BY c DESC
+LIMIT 2
+
+6.2)
+
+SELECT Tytul, Imie, Nazwisko
+FROM obrazy
+INNER JOIN malarze ON malarze.ID_malarza = obrazy.ID_malarza
+WHERE Tytul LIKE '*polowanie*' OR Tytul LIKE '*Polowanie*'
+
+6.3)
+
+// to nie jest zestawienie jakiego oczekują, aczkolwiek wyniki poprawne
+
+SELECT Miejscowosc, Stan, COUNT(*) as c
+FROM obrazy
+INNER JOIN malarze ON malarze.ID_malarza = obrazy.ID_malarza
+INNER JOIN oddzialy ON oddzialy.ID_oddzialu = obrazy.ID_oddzialu
+GROUP BY Miejscowosc, Stan
+ORDER BY Miejscowosc
+
+// lub rozwiązanie w pełni poprawne ale metodą na około
+
+SELECT Miejscowosc, ekspozycja_czasowa, ekspozycja_stala, w_magazynie, wypozyczony
+FROM(
+SELECT Miejscowosc, COUNT(*) as ekspozycja_czasowa
+FROM obrazy
+INNER JOIN malarze ON malarze.ID_malarza = obrazy.ID_malarza
+INNER JOIN oddzialy ON oddzialy.ID_oddzialu = obrazy.ID_oddzialu
+WHERE Stan = 'ekspozycja czasowa'
+GROUP BY Miejscowosc, Stan
+) as t1
+INNER JOIN (
+SELECT Miejscowosc, COUNT(*) as ekspozycja_stala
+FROM obrazy
+INNER JOIN malarze ON malarze.ID_malarza = obrazy.ID_malarza
+INNER JOIN oddzialy ON oddzialy.ID_oddzialu = obrazy.ID_oddzialu
+WHERE Stan = 'ekspozycja stala'
+GROUP BY Miejscowosc, Stan
+) AS t2 ON t1.Miejscowosc = t2.Miejscowosc
+INNER JOIN (
+SELECT Miejscowosc, COUNT(*) as w_magazynie
+FROM obrazy
+INNER JOIN malarze ON malarze.ID_malarza = obrazy.ID_malarza
+INNER JOIN oddzialy ON oddzialy.ID_oddzialu = obrazy.ID_oddzialu
+WHERE Stan = 'w magazynie'
+GROUP BY Miejscowosc, Stan
+) AS t3 ON t1.Miejscowosc = t3.Miejscowosc
+INNER JOIN (
+SELECT Miejscowosc, COUNT(*) as wypozyczony
+FROM obrazy
+INNER JOIN malarze ON malarze.ID_malarza = obrazy.ID_malarza
+INNER JOIN oddzialy ON oddzialy.ID_oddzialu = obrazy.ID_oddzialu
+WHERE Stan = 'wypozyczony'
+GROUP BY Miejscowosc, Stan
+) AS t4 ON t1.Miejscowosc = t4.Miejscowosc
+ORDER BY Miejscowosc
+
+6.4)
+
+SELECT SUBSTR(Tytul, 1, 1) as litera
+FROM obrazy
+GROUP BY SUBSTR(Tytul, 1, 1)
+ORDER BY COUNT(*) DESC
+LIMIT 1
+
+6.5)
+
+SELECT Imie, Nazwisko
+FROM obrazy
+INNER JOIN malarze ON malarze.ID_malarza = obrazy.ID_malarza
+WHERE Stan = 'wypozyczony'
+GROUP BY Imie, Nazwisko
+ORDER BY COUNT(*) DESC
+LIMIT 1
