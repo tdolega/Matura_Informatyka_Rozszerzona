@@ -1,16 +1,16 @@
 def sprawdz_somsiaduf(tab, x2, y2):
-    pixel = tab[y2][x2]
+    pixel = int(tab[y2][x2])
     if x != 0:
-        if abs(int(pixel) - int(tab[y2][x2-1])) > 128:
+        if abs(pixel - int(tab[y2][x2-1])) > 128:
             return 1
     if x != 319:
-        if abs(int(pixel) - int(tab[y2][x2+1])) > 128:
+        if abs(pixel - int(tab[y2][x2+1])) > 128:
             return 1
     if y != 0:
-        if abs(int(pixel) - int(tab[y2-1][x2])) > 128:
+        if abs(pixel - int(tab[y2-1][x2])) > 128:
             return 1
     if y != 199:
-        if abs(int(pixel) - int(tab[y2+1][x2])) > 128:
+        if abs(pixel - int(tab[y2+1][x2])) > 128:
             return 1
     return 0
 
