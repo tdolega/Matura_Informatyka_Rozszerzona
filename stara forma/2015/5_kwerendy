@@ -1,0 +1,34 @@
+5.1)
+
+SELECT "panstwo", COUNT( * ) as l
+FROM "puchar"
+INNER JOIN "zawody" ON "zawody"."id_zawodow" = "puchar"."id_zawodow"
+INNER JOIN "zawodnicy" ON "zawodnicy"."id_zawodnika" = "puchar"."id_zawodnika"
+WHERE miejsce = 1
+GROUP BY "panstwo" 
+
+5.2)
+
+SELECT nazwisko_i_imie
+FROM "puchar"
+INNER JOIN "zawodnicy" ON "zawodnicy"."id_zawodnika" = "puchar"."id_zawodnika"
+WHERE nota > 450
+GROUP BY nazwisko_i_imie 
+
+5.3)
+
+SELECT COUNT( * ) as l
+FROM "puchar"
+INNER JOIN "zawody" ON "zawody"."id_zawodow" = "puchar"."id_zawodow"
+INNER JOIN "zawodnicy" ON "zawodnicy"."id_zawodnika" = "puchar"."id_zawodnika"
+WHERE nazwisko_i_imie = 'MALYSZ Adam' AND nazwa_skoczni = 'Zakopane' AND miejsce = 1
+
+5.4)
+
+SELECT AVG(wynik_I_serii) as srednia1serii, AVG(wynik_II_serii) as srednia2serii, sezon
+FROM "puchar"
+INNER JOIN "zawody" ON "zawody"."id_zawodow" = "puchar"."id_zawodow"
+INNER JOIN "zawodnicy" ON "zawodnicy"."id_zawodnika" = "puchar"."id_zawodnika"
+WHERE nazwisko_i_imie = 'MALYSZ Adam'
+GROUP BY sezon
+ORDER BY sezon
