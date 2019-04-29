@@ -1,0 +1,16 @@
+a)			
+dostawy siana	12		
+dostawy żołędzi	13		
+b)			
+	28.12.2012		
+c)			
+sianem	64		
+żołędziami	26		
+d)			
+	data	siano	żołędzie
+	31 grudnia 2012	55,6000000000001	19,2
+	31 stycznia 2013	47,2000000000001	17,6
+	28 lutego 2013	49,6000000000001	12
+
+e)
+ o 5 sztuk

@@ -1,0 +1,11 @@
+a)
+
+447
+
+b)
+
+324
+
+c)
+
+49 spełniają warunek, z największą liczbą 1133357 oraz najmniejszą 24

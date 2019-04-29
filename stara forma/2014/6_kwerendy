@@ -1,0 +1,44 @@
+a)
+
+SELECT Imie, Nazwisko
+FROM preferencje
+INNER JOIN dzieci on dzieci.Pesel = preferencje.Pesel
+INNER JOIN przedszkola ON przedszkola.Id_przedszkola = preferencje.Id_przedszkola
+WHERE Wiek = 6 AND Plec = 'dziewczynka' AND Nazwa_przedszkola = 'Przedszkole nr 75'
+ORDER BY Nazwisko
+
+b)
+
+SELECT Imie, Nazwisko
+FROM preferencje
+INNER JOIN dzieci on dzieci.Pesel = preferencje.Pesel
+GROUP BY Pesel, Imie, Nazwisko
+HAVING COUNT(*) = 3
+ORDER BY Nazwisko
+LIMIT 3
+
+c)
+
+SELECT Nazwa_przedszkola, liczba_wyborow
+FROM (
+	SELECT Nazwa_przedszkola, Numer_preferencji, COUNT(*) AS liczba_wyborow
+	FROM preferencje
+	INNER JOIN przedszkola ON przedszkola.Id_przedszkola = preferencje.Id_przedszkola
+	GROUP BY Nazwa_przedszkola, Numer_preferencji
+	)
+WHERE Nazwa_przedszkola NOT IN (
+	SELECT Nazwa_przedszkola
+	FROM preferencje
+	INNER JOIN przedszkola ON przedszkola.Id_przedszkola = preferencje.Id_przedszkola
+	WHERE Numer_preferencji <> 1
+	GROUP BY Nazwa_przedszkola, Numer_preferencji
+	)
+	
+d)
+
+SELECT Nazwa_przedszkola, Liczba_miejsc, COUNT(*) AS liczba_chetnych, (COUNT(*)*1.00/Liczba_miejsc) AS srednia_chetnych
+FROM preferencje
+INNER JOIN przedszkola ON przedszkola.Id_przedszkola = preferencje.Id_przedszkola
+GROUP BY Nazwa_przedszkola, Liczba_miejsc
+ORDER BY srednia_chetnych
+LIMIT 3

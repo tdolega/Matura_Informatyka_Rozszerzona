@@ -1,0 +1,52 @@
+a)
+ 
+ SELECT ID_filmu, Tytul
+FROM filmy
+WHERE substring(ID_filmu, 3, 4) = 2005 AND Gatunek = 'familijny'
+ORDER BY Tytul
+
+b)
+
+SELECT Gatunek, COUNT(*) as liczba_wypozyczen
+FROM wypozyczenia
+INNER JOIN filmy ON filmy.ID_filmu = wypozyczenia.ID_filmu
+GROUP BY Gatunek
+ORDER BY liczba_wypozyczen DESC
+LIMIT 1
+
+
+c)
+
+SELECT MONTH(Data_wyp) as miesiac, COUNT(*) as liczba_wypozyczen
+FROM wypozyczenia
+WHERE Data_wyp BETWEEN '2011-06-01' AND '2011-12-31'
+GROUP BY MONTH(Data_wyp)
+
+d)
+
+SELECT "Imie", "Nazwisko", SUM( "Cena_w_zl" ) "zaplacil" 
+FROM "wypozyczenia" 
+INNER JOIN "filmy" ON "filmy"."ID_filmu" = "wypozyczenia"."ID_filmu" 
+INNER JOIN "klienci" ON "klienci"."Pesel" = "wypozyczenia"."Pesel" 
+GROUP BY "Pesel", "Imie", "Nazwisko" 
+ORDER BY "zaplacil" DESC
+LIMIT 1
+
+
+e1)
+
+SELECT COUNT(*) AS liczba_filmow
+FROM filmy
+WHERE ID_filmu NOT IN (
+	SELECT ID_filmu
+	FROM wypozyczenia
+)
+
+e2)
+
+SELECT Tytul
+FROM filmy
+WHERE ID_filmu NOT IN (
+	SELECT ID_filmu
+	FROM wypozyczenia
+)
