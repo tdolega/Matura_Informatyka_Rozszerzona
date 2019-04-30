@@ -1,0 +1,39 @@
+a)
+
+SELECT rodzaj_uslugi, SUM(rata) as sumaryczna_kwota
+FROM uslugi
+GROUP BY rodzaj_uslugi
+
+b)
+
+SELECT ozn, nr
+FROM uslugi
+INNER JOIN nip_firm ON nip_firm.NIP = uslugi.NIP
+WHERE firma = 'BARTEX'
+ORDER BY nr DESC
+
+c)
+
+SELECT firma, COUNT(*) AS liczba
+FROM uslugi
+INNER JOIN nip_firm ON nip_firm.NIP = uslugi.NIP
+WHERE rodzaj_uslugi = 'L'
+GROUP BY NIP, firma
+ORDER BY COUNT(*) DESC
+LIMIT 1
+
+d)
+
+SELECT DISTINCT(powiat)	
+FROM uslugi
+LEFT JOIN tablice ON tablice.ozn = uslugi.ozn
+WHERE rodzaj = 'z'
+
+e)
+
+SELECT firma, AVG(ROUND(rata, 2)) as srednia_rata
+FROM uslugi
+INNER JOIN nip_firm ON nip_firm.NIP = uslugi.NIP
+INNER JOIN tablice ON tablice.ozn = uslugi.ozn
+WHERE powiat = 'Konin'
+GROUP BY NIP, firma
