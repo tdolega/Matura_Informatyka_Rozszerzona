@@ -1,0 +1,13 @@
+a)	271
+
+b1)	FAŁSZ
+
+b2)	3.10.2011
+	185	dni
+
+b3)	83 samochody aby C10 <= 0
+
+c)	Trawa 1 dzien	trawa po 100 dniach
+	10000	        5109
+	7000	        4968
+	4000	        4824

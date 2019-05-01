@@ -1,0 +1,33 @@
+a)
+
+SELECT płeć, COUNT(płeć) as liczba
+FROM psy
+GROUP BY płeć
+
+b)
+
+SELECT nazwisko, imie
+FROM osoby
+INNER JOIN psy ON psy.id_osoby = osoby.id_osoby
+GROUP BY id_osoby, nazwisko, imie
+HAVING COUNT(*) > 8
+ORDER BY nazwisko
+
+c)
+
+SELECT imie, nazwisko, SUM("liczba zdobytych medali") AS "łącznie medali"
+FROM osoby
+INNER JOIN psy ON psy.id_osoby = osoby.id_osoby
+GROUP BY id_osoby, nazwisko, imie
+ORDER BY "łącznie medali" DESC
+LIMIT 1
+
+d)
+
+SELECT COUNT(*) as liczba_osob
+FROM(
+	SELECT COUNT(*)
+	FROM psy
+	WHERE rasa LIKE '%owczarek%'
+	GROUP BY id_osoby
+)

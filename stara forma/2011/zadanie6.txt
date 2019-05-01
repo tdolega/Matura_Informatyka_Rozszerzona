@@ -1,0 +1,3 @@
+a) parzyste: 497
+b) max dwojkowo 1111101111110110 i max dziesietnie: 64502
+c) jest 101 takich liczb a ich suma wynosi 1001100111110111
