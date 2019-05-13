@@ -1,0 +1,57 @@
+6.1)
+
+SELECT Pojemnosc_dysku, count(Pojemnosc_dysku) as liczba
+FROM komputery
+GROUP BY Pojemnosc_dysku
+ORDER BY liczba DESC
+LIMIT 10
+
+6.2)
+
+SELECT Numer_komputera, COUNT(*) as ilosc_napraw
+FROM komputery
+INNER JOIN awarie ON awarie.Numer_komputera = komputery.Numer_komputera
+INNER JOIN naprawy ON naprawy.Numer_zgloszenia = awarie.Numer_zgloszenia
+WHERE Sekcja = 'A' AND Rodzaj = 'wymiana'
+GROUP BY Numer_komputera
+HAVING count(*) >= 10
+
+6.3)
+
+SELECT dz, mi, rok, Sekcja
+FROM(
+	SELECT DAY(Czas_awarii) AS dz, MONTH(Czas_awarii) as mi, YEAR(Czas_awarii) AS rok, Sekcja, COUNT(*) as co
+	FROM komputery
+	INNER JOIN awarie ON awarie.Numer_komputera = komputery.Numer_komputera
+	GROUP BY DAY(Czas_awarii), MONTH(Czas_awarii), YEAR(Czas_awarii), Sekcja
+)
+WHERE (co + Sekcja) IN (
+	SELECT (COUNT(*) + Sekcja)
+	FROM komputery
+	GROUP BY Sekcja
+)
+
+6.4)
+
+SELECT "Numer_zgloszenia", "Czas_awarii", "Czas_naprawy"
+FROM "komputery"
+INNER JOIN "awarie" ON "awarie"."Numer_komputera" = "komputery"."Numer_komputera"
+INNER JOIN "naprawy" ON "naprawy"."Numer_zgloszenia" = "awarie"."Numer_zgloszenia"
+ORDER BY DATEDIFF( 'ms', "Czas_awarii", "Czas_naprawy" ) DESC
+LIMIT 1
+
+6.5)
+
+SELECT COUNT(*) as liczba
+FROM(
+	SELECT Numer_komputera
+	FROM "komputery"
+	LEFT JOIN "awarie" ON "awarie"."Numer_komputera" = "komputery"."Numer_komputera"
+	WHERE Numer_komputera NOT IN (
+		SELECT Numer_komputera
+		FROM "komputery"
+		INNER JOIN "awarie" ON "awarie"."Numer_komputera" = "komputery"."Numer_komputera"
+		WHERE Priorytet >= 8
+	)
+	GROUP BY Numer_komputera
+)
